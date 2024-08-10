@@ -7,30 +7,29 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+final class ViewController: UIViewController {
     
-    @IBOutlet weak var mainCountLabel: UILabel!
-    @IBOutlet weak var historyTextView: UITextView!
+    @IBOutlet private weak var mainCountLabel: UILabel!
+    @IBOutlet private weak var historyTextView: UITextView!
     
-    let dateFormatter = DateFormatter()
+    private let dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd.MM.yyyy HH:mm:ss"
+        return formatter
+    }()
     
-    var count: Int = 0 {
+    private var count: Int = 0 {
         didSet {
             mainCountLabel.text = "\(count)"
         }
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        dateFormatter.dateFormat = "dd.MM.yyyy HH:mm:ss"
-    }
-    
-    @IBAction func resetButtonPressed(_ sender: Any) {
+    @IBAction private func resetButtonPressed(_ sender: Any) {
         count = 0
         historyTextView.text += "\n\(currentDatePretty()): значение сброшено"
     }
-
-    @IBAction func minusButtonPressed(_ sender: Any) {
+    
+    @IBAction private func minusButtonPressed(_ sender: Any) {
         if count > 0 {
             count -= 1
             historyTextView.text += "\n\(currentDatePretty()): значение изменено на -1"
@@ -38,13 +37,13 @@ class ViewController: UIViewController {
             historyTextView.text += "\n\(currentDatePretty()): попытка уменьшить значение счётчика ниже 0"
         }
     }
-
-    @IBAction func plusButtonPressed(_ sender: Any) {
+    
+    @IBAction private func plusButtonPressed(_ sender: Any) {
         count += 1
         historyTextView.text += "\n\(currentDatePretty()): значение изменено на +1"
     }
     
-    func currentDatePretty() -> String {
+    private func currentDatePretty() -> String {
         dateFormatter.string(from: Date())
     }
 }
